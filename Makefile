@@ -1,2 +1,2 @@
 pagecache: pagecache.cpp
-	g++ $< -o $@
+	g++ -Os -Wall -Wextra $< -o $@
