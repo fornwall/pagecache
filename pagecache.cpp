@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 	if (argc != 2) { fprintf(stderr, "usage: %s file_to_examine\n", argv[0]); return 1; }
 	char const* const file_name = argv[1];
 
-	int const fd = open(file_name, 0);
+	int const fd = open(file_name, O_RDONLY);
 	if (fd == -1) { perror("open() failed"); return 1; }
 
 	struct stat stat_buffer;
