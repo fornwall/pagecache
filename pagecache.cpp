@@ -6,6 +6,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#ifdef __APPLE__
+typedef char mincore_element_type;
+#else
+typedef unsigned char mincore_element_type;
+#endif
+
 int main(int argc, char** argv)
 {
 	if (argc != 2) { fprintf(stderr, "usage: %s file_to_examine\n", argv[0]); return 1; }
@@ -23,14 +29,14 @@ int main(int argc, char** argv)
 
 	int const page_size = getpagesize();
 	int const num_pages = stat_buffer.st_size / page_size + (stat_buffer.st_size % page_size == 0 ? 0 : 1);
-	char* const page_vector = (char*) malloc(num_pages);
+	mincore_element_type* page_vector = (mincore_element_type*) malloc(num_pages);
 	if (page_vector == NULL) { fprintf(stderr, "malloc() for page_vector failed\n"); return 1; }
 	if (mincore(mapped_mem, stat_buffer.st_size, page_vector) == -1) { perror("mincore() failed"); return 1; }
 
 	int total_in_mem = 0;
 	printf("Page cache for '%s' (file size=%lld, page size=%d):\n", file_name, stat_buffer.st_size, page_size);
 	for (int i = 0; i < num_pages; i++) {
-		bool const in_mem = page_vector[i] & MINCORE_INCORE;
+		bool const in_mem = page_vector[i] & 1;
 		if (in_mem) total_in_mem++;
 		printf(in_mem ? "1" : "0");
 	}
