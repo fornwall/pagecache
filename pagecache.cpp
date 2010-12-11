@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#ifdef __APPLE__
+#ifndef __linux__
 typedef char mincore_element_type;
 #else
 typedef unsigned char mincore_element_type;
