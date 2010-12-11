@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	if (mincore(mapped_mem, stat_buffer.st_size, page_vector) == -1) { perror("mincore() failed"); return 1; }
 
 	int total_in_mem = 0;
-	printf("Page cache for '%s' (file size=%lld, page size=%d):\n", file_name, stat_buffer.st_size, page_size);
+	printf("Page cache for '%s' (file size=%lld, page size=%d):\n", file_name, (long long) stat_buffer.st_size, page_size);
 	for (int i = 0; i < num_pages; i++) {
 		bool const in_mem = page_vector[i] & 1;
 		if (in_mem) total_in_mem++;
