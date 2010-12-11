@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	if (fstat(fd, &stat_buffer) == -1) { perror("fstat() failed"); return 1; }
 	if (stat_buffer.st_size == 0) { fprintf(stderr, "%s: File is empty\n", file_name); return 1; }
 
-	void* mapped_mem = mmap(NULL, stat_buffer.st_size, PROT_NONE, MAP_FILE | MAP_PRIVATE | MAP_NOCACHE, fd, 0);
+	void* mapped_mem = mmap(NULL, stat_buffer.st_size, PROT_NONE, MAP_FILE | MAP_PRIVATE, fd, 0);
 	if (mapped_mem == MAP_FAILED) { perror("mmap() failed"); return 1; }
 
 	int const page_size = getpagesize();
