@@ -2,6 +2,7 @@ A command line wrapper around the mincore(2) system call to examine the page cac
 
 Example demonstrating usage:
 
+
 $ # initially, file-to-examine does not have any content in the page cache:
 $ pagecache file-to-examine
 Page cache for 'file-to-examine' (file size=99007, page size=4096):
