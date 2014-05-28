@@ -15,7 +15,12 @@ typedef unsigned char mincore_element_type;
 int main(int argc, char** argv)
 {
 	if (argc < 2) { fprintf(stderr, "usage: %s file_to_examine\n", argv[0]); return 1; }
+	bool only_summary = false;
 	for (int i = 1; i < argc; i++) {
+		if (i == 1 && !strcmp(argv[i], "-s")) {
+			only_summary = true;
+			continue;
+		}
 		char const* const file_name = argv[i];
 
 		int const fd = open(file_name, O_RDONLY);
@@ -38,11 +43,14 @@ int main(int argc, char** argv)
 		for (int p = 0; p < num_pages; p++) if (page_vector[p] & 1) total_in_mem++;
 
 		printf("%s (file size=%lld, page size=%d", file_name, (long long) stat_buffer.st_size, page_size);
-		printf(", %d/%d = %d%% pages cached): ", total_in_mem, num_pages, (100*total_in_mem) / num_pages);
+		printf(", %d/%d = %d%% pages cached)", total_in_mem, num_pages, (100*total_in_mem) / num_pages);
 
-		for (int p = 0; p < num_pages; p++) {
-			bool const in_mem = page_vector[p] & 1;
-			printf(in_mem ? "1" : "0");
+		if (!only_summary) {
+			printf(": ");
+			for (int p = 0; p < num_pages; p++) {
+				bool const in_mem = page_vector[p] & 1;
+				printf(in_mem ? "1" : "0");
+			}
 		}
 		printf("\n");
 		free(page_vector);
