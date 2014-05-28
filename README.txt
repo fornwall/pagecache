@@ -1,7 +1,6 @@
-A command line wrapper around the mincore(2) system call to examine the page cache of a file.
+A command line wrapper around the mincore(2) system call to examine file page caches.
 
-Example demonstrating usage:
-
+Examples demonstrating usage:
 
 $ # initially, file-to-examine does not have any content in the page cache:
 $ pagecache file-to-examine
